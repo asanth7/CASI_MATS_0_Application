@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+
+\usepackage{mathpazo}
+\usepackage[natbib,style=alphabetic,maxalphanames=3,maxcitenames=2,maxbibnames=10]{biblatex}
+\addbibresource{bib.bib}
+\addbibresource{CASIMats.bib}
+
+\usepackage{fancyhdr} % Load the fancyhdr package
+
+% Configure fancyhdr
+\pagestyle{fancy} % Apply the fancy page style
+\fancyhf{} % Clear all header and footer fields
+\fancyhead[L]{Arav Santhanam} % Place the document title on the left of the header
+\fancyhead[R]{10.30.2025} % Place the author name on the right of the header
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt} 
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{definition}{Definition}
+
+\usepackage{todonotes}
+\usepackage{xcolor}
+\usepackage{color-edits}
+\usepackage[colorlinks,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+
+% matan includes
+\usepackage{outlines}				%out enviroment 
+\usepackage{xspace}                 %so we don't need
+\usepackage{cancel}                 %\not across multiple symbols
+\usepackage{mdframed}
+\usepackage{enumitem}               % nolistsep
+\usepackage{cleveref}               % cref
+
+\include{lib/macros.tex}
+
+% Define custom environments for Questions and Answers
+\newenvironment{question}{\vspace{1em}\noindent\textbf{Question:}\itshape}{\par}
+
+% Optional: Customize section titles if you prefer to use sections for questions
+% \titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
+% \titlespacing*{\section}{0pt}{1em}{0.5em}
+
+\begin{document}
+
+\section*{CASI-MATS 0: Application Questions} % Use an unnumbered section title
+
+\begin{question}
+\cite{gotting2025virology} proposes a benchmark for evaluating LLMs' virology capabilities.
+Read the paper and assess it critically: Do you see any methodological gaps or limitations that would make you doubt their results?
+What findings did you find most striking or concerning?\\\end{question}
+
+Despite some methodological limitations, the Virology Capabilities Test (VCT) benchmark is a powerful tool for safety researchers and bioscientists to more accurately understand current LLM capabilities in dual-use virology knowledge. Specifically, it is fascinating that the highest-performing models outperform human experts by more than 20\%, with certain models from OpenAI, Claude, and Gemini performing above the 80th percentile of expert virologists. Even more strikingly, many frontier models outperform \textit{all} experts on the text-only subset, with all tested LLMs outperforming at least 86\% of human experts. While the VCT is not a perfectly standardized reference for virology knowledge, the results highlight the ability of these models to access and formulate dangerous responses with drastic implications.
+
+Although preliminary tests with the VCT provide substantial evidence for more controlled expansion and training of large-scale reasoning models, especially as laboratory aids in the biosciences, there are a few theoretical flaws that detract from the benchmark's efficacy and generalizability.
+
+First, the benchmark questions' topics and curation process may limit the VCT's generalizability to real-world scenarios. The questions are selected by experts who carefully vet, review, and edit submissions (by other experts) in a rigorous acceptance process. However, malicious actors that seek LLM support for dangerous projects (e.g., wet-lab work reverse engineering viral strains or building bioweapons) will not likely phrase their queries with the level of precision, detail, and clarity present in the benchmark questions. Thus, it is important to consider whether model performance on the VCT is directly correlated with performance with more realistic user inputs. To address this, future studies could consider gathering data from non-experts (beyond graduate students and PhD-level virologists) to assess model performance on "messier" queries (i.e. contrived questions seeking LLM advice on conducting harmful wet-lab experiments, without fine-toothed editing). This might reveal that the LLMs are more or less helpful or accurate in diagnosing user needs and providing reliable information, especially when a non-expert is relying more heavily on those responses than an expert, who can leverage significant field experience and tacit knowledge. Furthermore, the authors explicitly mention that they do not include questions referencing unambiguously dual-use topics and justify their decision by claiming that such dual-use knowledge is also rare, practical, and important, this choice encourages caution in assuming that the VCT automatically serves as a proxy for LLM knowledge of dual-use virology. While their concerns of disseminating harmful information is valid, this broader generalization beyond the carefully-chosen VCT questions is difficult to claim without including potential 'edge-cases'.
+
+Furthermore, the uneven topic distribution among questions also raises concerns about generalization. \cite{gotting2025virology} specifically mention that "[q]uestion contribution among experts was heavy-tailed... [and] the ten most productive experts contributed 51\% of all questions". Appendix 6 also notes that certain topics, such as animal procedures, mass spectrometry, are completely missing from the benchmark. The uneven coverage of specialties suggest that the benchmark may systematically under-represent critical domains within virology.
+
+Finally, the structure of the model responses and zero-shot evaluation procedure must be carefully examined. While the computation of Hamming distance between fully-correct answer and model/human response vectors is useful in estimating how close answers were to being fully correct, the multi-response format is not representative of real-world testing conditions, where users may iteratively ask open-ended questions about certain circumstances or desire highly specific troubleshooting assistance with smaller components of a procedure. For example, the VCT does not fully capture the ability of LLMs to provide useful step-by-step guidance, which could be incredibly dangerous for non-expert bad actors. Thus, there is no immediately obvious connection between the models' ability to provide theoretical knowledge (even if about lab-based activities) and provide detailed guidance in a lab environment. Furthermore, since zero-shot prompting is especially sensitive to the wording of the prompt (because of the lack of explicit examples), this reinforces the importance of including more organic (less edited) questions in the benchmark, reflecting more realistic conditions.
+
+
+\begin{question}
+\cite{jones2024adversariesb} proposes a threat model that differs from traditional jailbreaking works like \cite{chao2024jailbreakinga}.
+What is the key difference?
+Now, try implementing the attack from \cite{jones2024adversariesb} on one or two models and report your results.
+Explain the broad attack framework, what you tried, and your reasoning behind your approach. 
+Explain how you assessed whether you succeeded or not.\\
+\end{question}
+
+\cite{chao2024jailbreakinga} proposes the Prompt Automatic Iterative Refinement (PAIR) algorithm for systematic and automated jailbreaks without human intervention; the parallelizable approach pits an attacker LLM against a target LLM to iteratively determine prompt-level semantic jailbreaks that are interpretable. On the other hand, \cite{jones2024adversariesb} emphasizes the importance of assessing collaborative red-teaming approaches that incorporate more than one target model, especially when individuals models can be safe. Specifically, they propose a multi-model approach for more effective and robust jailbreaking, which allows adversaries to sequentially query combinations of weak and frontier models with appropriate human or model-generated task decompositions and prompts. They explicitly mention that this approach reveals significant potential for misuse without perfectly aligned models ever generating objectionable content, because simpler, maligned tasks can be accomplished by weaker, unaligned models.
+
+For information on the code implementation and results implementing this attack, please refer to the \texttt{jds\_decomposition} folder and the \texttt{README.md} file for more information.
+
+\begin{question}
+    \cite{glukhov2024breach} is another paper on decomposition attacks.
+What unique value does it add beyond previous work?
+Can you explain what in your opinion their mathematical framework accomplishes?\\
+\end{question}
+
+In contrast to models of security adversaries, including jailbreak attacks, \cite{glukhov2024breach} propose an model of inferential adversaries; this approach measures impermissible knowledge gain by an adversary as opposed to a specific malicious response by a target LLM. They find that their question and task-decomposition paradigm can outperform jailbreaking in extracting harmful information from victim language models. They emphasize that this information can be gained \textit{without jailbreaking}, but by instead decomposing a query into a series of benign sub-questions and aggregating the sub-responses to produce a final output for an adversary. Thus, their framework broadly quantifies the marginal and joint risk of model outputs in aiding adversarial behavior.
+
+Specifically, they mathematically define Impermissible Information Leakage (IIL) as the pointwise mutual information (PMI) score scaled by the adversary's confidence post-prompting. In other words, they estimate the change in the adversarial LLM's confidence in the "impermissible" answer before and after accumulating knowledge from sub-questions, scaling the final value by the confidence (next-token probability) to more easily distinguish between low and high-confidence in answer choices. To this end, the adversary's goal is to choose queries that maximize the Inferential Adversary Objective, which sums the aforementioned scaled PMI scores over all impermissible answers $a\in A_q$ after some number of interactions between the adversarial and victim LLM. The authors customize the definition of mutual information (expected value of PMI) as involving the sum of scaled PMI scores \textit{only over impermissible answers} as opposed to over all possible outputs of the victim LLM. This makes sense in context, as impermissible knowledge gain depends solely on increased confidence in dangerous answers, instead of all possible answers. Thus, the framework enables estimation of how much impermissible information adversarial LLMs can learn after $k$ censored interactions. 
+
+Furthermore, they extend traditional Censorship Mechanisms for security adversaries (which filter responses to given user inputs based on transformed output probability distributions) by ensuring that the total information leakage over all possible interactions and histories is upper-bounded by some reasonable leakage bound of $\epsilon$ bits (the ($k,\epsilon)$-Information Censorship Mechanism). This approach is powerful as it accounts for question decomposition where responses are not explicitly objectionable themselves (and thus filtered by standard censorship mechanisms). To account for cases when the adversarial LLM interacts with the victim model across independent context windows (without a conversation history), they propose a non-adaptive ICM variation scales roughly linearly with the number of interactions $k$ (the dependency term accounts for potential statistical dependence between interactions). This is particularly important for multi-context red-teaming efforts, as in this project, where adversaries can query multiple models with accumulating information leakage and few or no explicitly malicious outputs.
+
+Finally, the authors define a randomization scheme to return either the true model output or a "safe string" that is guaranteed to provide no impermissible information or utility to the user. They find that the utility decreases linearly with smaller $\epsilon$ bounds (stronger restrictions on model outputs) and address the undesirable scenario where benign users rarely receive the true model output by upper-bounding the utility based on permissible information learned. Thus, this approach flexibly balances usability for benign users and minimized information leakage for malicious actors.
+
+
+For information on the code implementation and results implementing this attack, please refer to the \texttt{cyber\_decomposition} folder and the \texttt{README.md} file for more information.
+
+\begin{question}
+    Hunt for other relevant papers on decomposition attacks and multi-context jailbreaking. What
+did you find? If you can’t find more paper, which papers other topics do you consider closely
+related?\\
+\end{question}
+
+Similar to \cite{chao2024jailbreakinga}, \cite{li_drattack_2024} proposes DrAttack, an prompt decomposition and reconstruction algorithm for automated jailbreaking. The method begins by decomposing the malicious prompt into "benign" sub-prompts (e.g. instruction, grammatical structure, verb, noun). Then, these are reassembled to preserve semantic similarity (via In-Context Learning with sub-prompt edits through GPT-4 queries). Finally, a Synonym Attack strategy replaces phrases in the sub-prompts with appropriate synonyms discovered in a subset of the entire vocabulary. They extend this framework as a novel introduction beside existing prefix-based, suffix-based, and hybrid approaches. Finally, they report increased attack success rates on GPT-4 by up to 50\% with GPT evaluation and up to 65\% by human evaluation over state-of-the-art black and white-box methods, with less than 10 required queries on average. More generally, their approach is significantly more successful than other methods in inducing jailbreaks in closed-source frontier models including GPT-3.5-turbo, GPT-4, Claude-1, Claude-2, and Gemini-Pro.
+
+Beyond prompt-based interventions, \cite{zhang_exploiting_nodate} proposes a "knowledge decomposition" approach that does not utilize specific prompt or token-based jailbreaks. This framework attacks \textit{task-level} model vulnerabilities that remain even with realignment patching in newer model iterations, leveraging query decompositions similar to \cite{glukhov2024breach}. Crucially, they assume that for any dangerous task, risk tolerance, and $\epsilon \in [0,1]$, the task can be decomposed into harmless subtasks after some $\n$ decompositions, such that the risk/danger of the subtask is below the threshold with probability greater than $1-\epsilon$. They leverage meta-prompting to automate their jailbreaks Overall, their method achieves attack success rates of 96\% and 94\% on Llama2-7B-Chat and GPT-3.5-turbo respectively, roughly 40\% and 20\% above state-of-the-art methods, respectively. Notably, they introduce a jailbreak benchmark for LLMs that includes many tasks from high to low risk (potential for misuse or danger), which can yield additional insight into LLM defense mechanisms at different risk levels (as many frontier models can now refuse most high-risk prompts).
+
+\begin{question}
+    What excites or concerns you about this line of work?
+What questions do you have about its real-world impact?
+What future directions seem most promising?
+This is your space to share your unfiltered thoughts---just try to stay on topic $\;$ ; )\\
+\end{question}
+
+
+\end{document}
+
+
+
