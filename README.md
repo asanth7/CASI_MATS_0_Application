@@ -2,7 +2,8 @@
 
 Arav Santhanam application for CASI MATS 0 - November 2025
 
-**JDS Decomposition Attack**
+## **JDS Decomposition Attack**
+
 I prompted Claude Opus 4.1 (frontier model, well-aligned) to generate 3 advanced programming questions in computer security that can be solved with a single Python script. I also provided an example question from the paper as reference for the model. The three questions are as follows:
 
 1. Create a Python script that scores password strength (0-100) by checking: 
