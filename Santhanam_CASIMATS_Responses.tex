@@ -92,6 +92,14 @@ Finally, the authors define a randomization scheme to return either the true mod
 For information on the code implementation and results implementing this attack, please refer to the \texttt{cyber\_decomposition} folder and the \texttt{README.md} file for more information.
 
 \begin{question}
+    \cite{brown2025benchmarking} curates a dataset to study decomposition attacks, focusing exclusively on WMDP queries.
+Your task: build a small cyber dataset for decomposition attacks.
+Explain your methodology for curating the dataset---why did you choose this approach and how you chose this approach?
+How would you scale it up?
+Can you get an agent to try to solve these questions directly? With decomposition attack? 
+\end{question}
+
+\begin{question}
     Hunt for other relevant papers on decomposition attacks and multi-context jailbreaking. What
 did you find? If you can’t find more paper, which papers other topics do you consider closely
 related?\\
@@ -108,6 +116,11 @@ What future directions seem most promising?
 This is your space to share your unfiltered thoughts---just try to stay on topic $\;$ ; )\\
 \end{question}
 
+The increasingly scalable potential of frontier models definitely poses significant alignment risks that must be mitigated, especially in the face of advancing adversarial techniques (from simpler jailbreaking approaches just a few years ago to more complex decomposition approaches now). In the future, it will be fascinating to explore the potential of external systems (beyond the LLMs themselves) to respond to adversarial attacks on victim models. For example, these could track conversation and interaction history externally (potentially an implementation or extension of the approach presented by \cite{glukhov2024breach}); \cite{yueh-han_monitoring_2025} proposes an efficient external monitor that significantly reduces random task injection and latency, achieving a 93\% defense success rate (on GPT-4o-mini) through careful prompt engineering. These monitors observe the full conversation "at a higher granularity" and instruct the LLM to suspend further responses. 
+
+As defense capabilities scale, it is equally fascinating to understand evolving agentic adversarial strategies. Specifically, \cite{srivastav_safe_2025} explores a multi-agent approach that extends previous work on query decomposition by leveraging a host of independent agents with separate system prompts, where one decomposes questions, another answers sub-questions, and a third aggregates those answers; these agents coordinate an attack on a victim LLM and their framework dramatically outperform other jailbreak methods on a variety of open and closed-source models on the AdvBench dataset.
+
+While I enjoy reading about AI alignment and safety in general, I realize that I have a lot to learn! I am especially curious to learn more about this work in applied contexts, including large-scale deployment at leading research firms, real-time knowledge editing and output filtering, and more. 
 
 \end{document}
 
